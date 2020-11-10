@@ -1,0 +1,143 @@
+entity Appointment {
+
+  status String required maxlength(255),
+
+  truckNo String required minlength(1) maxlength(255),
+
+  truckCompany String maxlength(255),
+  
+  plateNumber String required maxlength(100),
+
+  driverPhoto Blob,
+  
+  driverId String required minlength(1) maxlength(100),
+  
+  driverName String required maxlength(255),
+  
+  direction String required maxlength(255),
+  
+  appointDateFrom ZonedDateTime required,
+    
+  appointDateTo ZonedDateTime required
+}
+
+
+entity AppointTrailer{
+
+  trailerNo String required maxlength(255)
+  
+}
+
+entity AppointContailer{
+  
+  containerNo String required maxlength(255),
+  
+  transType String required maxlength(255),
+  
+  ctSize String required maxlength(255),
+  
+  lane String required maxlength(255),
+  
+  location String
+
+}
+
+entity ScanInfo {
+
+  truckNo String required minlength(1) maxlength(255),
+
+  truckCompany String maxlength(255),
+  
+  plateNumber String required maxlength(100),
+
+  driverPhoto Blob,
+  
+  direction String required maxlength(255),
+  
+  driverId String required minlength(1) maxlength(100),
+  
+  driverName String required maxlength(255),
+  
+  direction String required maxlength(255),
+  
+  arrivalDate ZonedDateTime required
+}
+
+
+entity ScanTrailer{
+
+  trailerNo String required maxlength(255)
+  
+}
+
+entity ValidationResult{
+
+  appointId Long required,
+  
+  scanId Long required,
+  
+  result TextBlob required
+  
+}
+
+entity ScanContailer{
+  
+  containerNo String required maxlength(255),
+  
+  transType String required maxlength(255),
+  
+  ctSize String required maxlength(255),
+  
+  lane String required maxlength(255),
+  
+  location String
+
+}
+
+entity Gate{
+  
+  gateNumber String required maxlength(255),
+  
+  gateType String required maxlength(255),
+  
+  lane String required maxlength(255),
+  
+  operatorId String maxlength(255),
+  
+  createDate Instant required,
+  
+  modifyDate Instant required
+
+}
+
+relationship OneToMany {
+	Appointment{trailers(appointmentId)} to AppointTrailer{appointment(id)}
+}
+
+relationship OneToMany {
+	Appointment{containers(appointmentId)} to AppointContailer{appointment(id)}
+}
+
+relationship OneToMany {
+	ScanInfo{trailers(scantId)} to ScanTrailer{scan(id)}
+}
+
+relationship OneToMany {
+	ScanInfo{containers(scanId)} to ScanContailer{scan(id)}
+}
+
+
+
+paginate Appointment with pagination
+
+paginate AppointTrailer with pagination
+
+paginate AppointContailer with pagination
+
+paginate ScanInfo with pagination
+
+paginate ScanTrailer with pagination
+
+paginate ScanContailer with pagination
+
+service all with serviceImpl
